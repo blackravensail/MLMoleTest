@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <title>Mole </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+<body>
+    <div class="container" id="main">
+        <h2>ML Mole Test</h2>
+        <div class="row">
+            <div class="col m6">
+                <p>
+                    Use the dialog to the left to test if a mole is malignant using a Deep Convolutional Neural Network.
+                </p>
+                <form action="#">
+                    <div class="file-field input-field">
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" id="fileInput" type="text" placeholder="Select Image" accept="image/*"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col m6">
+                <div class="imgCont">
+                    <canvas id="canvas" height="299" width="299"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Result</th>
+                        <th>Confidence</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                </tbody>
+            </table>
+
+
+        </div>
+        <img src='516146cc4f246ff28ff2cbbf993bf91a.jpg' id="samp">
+
+    </div>
+    <script src="bundle.js"></script>
+</body>
+
+</html>
