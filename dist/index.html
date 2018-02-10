@@ -3,6 +3,7 @@
 <head>
     <title>Mole </title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
@@ -17,11 +18,13 @@
                     <div class="file-field input-field">
                         <div class="btn">
                             <span>File</span>
-                            <input type="file">
+                            <input type="file" id="fileInput">
                         </div>
-                        <div class="file-path-wrapper">
+                        <button id="btnCrop">Crop</button>
+                        <button id="btnRestore">Restore</button>
+                       <!--  <div class="file-path-wrapper">
                             <input class="file-path validate" id="fileInput" type="text" placeholder="Select Image" accept="image/*"/>
-                        </div>
+                        </div> -->
                     </div>
                 </form>
             </div>

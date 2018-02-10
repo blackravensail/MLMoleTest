@@ -2,9 +2,9 @@
 import './style.css';
 import "materialize-loader";
 
+*/
 
 import cropper from "cropper";
-*/
 const $ = require("jquery");
 import sample from "./images/a2.jpg";
 import ndarray from 'ndarray';
@@ -14,7 +14,7 @@ import * as KerasJS from 'keras-js';
 
 $(document).ready(function() {
     //$(".imgCont").append($("<img id='image' src="+ sample +"></img>"))
-    //makeCropper()
+    makeCropper()
     var ctx = document.getElementById('canvas').getContext("2d");
     ctx.drawImage(document.getElementById("samp"),10, 10)
 
@@ -24,15 +24,18 @@ $(document).ready(function() {
     })
     //console.log(runModel(model));
 })
-/*
+
 function makeCropper() {
     var canvas = $("#canvas"),
         context = canvas.get(0).getContext("2d"),
         $result = $('#result');
 
+    // jQuery
     $('#fileInput').on('change', function() {
         if (this.files && this.files[0]) {
             if (this.files[0].type.match(/^image\//)) {
+                console.log(this.files[0]);
+                console.log(this.files[0].type.match(/^image\//));
                 var reader = new FileReader();
                 reader.onload = function(evt) {
                     var img = new Image();
@@ -64,7 +67,7 @@ function makeCropper() {
         }
     });
 }
-*/
+
 function makePrediction(data1) {
     model
         .ready()
