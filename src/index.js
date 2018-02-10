@@ -9,7 +9,7 @@ const $ = require("jquery");
 import sample from "./images/a2.jpg";
 import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
-import model1 from "./models/inception_v3.bin"
+import model1 from "./graphs/test3.bin"
 import * as KerasJS from 'keras-js';
 
 $(document).ready(function() {
@@ -22,7 +22,7 @@ $(document).ready(function() {
         filepath: model1,
         gpu: true
     })
-    console.log(runModel(model));
+    //console.log(runModel(model));
 })
 /*
 function makeCropper() {
