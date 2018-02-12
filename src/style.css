@@ -1,0 +1,30 @@
+.hello {
+	color: red;
+}
+body {
+	background:url('./images/ml8.jpg') center center no-repeat;
+    background-attachment: fixed;
+    background-size:cover;
+    color: white;
+    font-family: sans-serif;
+}
+#main {
+    background-color: rgba(84,84,84,.8) !important;
+    border-radius: 4px;
+    padding: 2em;
+    /*margin-top: 7em;*/
+}
+img {
+    max-width: 100%;
+}
+.imgCont {
+    width: 100%;
+    border: 2px solid blue;
+}
+
+canvas {
+  width: 100%;
+  background-color: transparent;
+  cursor: default;
+  border: 1px solid black;
+}

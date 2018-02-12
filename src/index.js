@@ -1,15 +1,15 @@
 /*import _ from 'lodash';
-import './style.css';
+
 import "materialize-loader";
 
 */
-
+import './style.css';
 import cropper from "cropper";
 const $ = require("jquery");
 import sample from "./images/a2.jpg";
 import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
-import model1 from "./graphs/test3.bin"
+import model1 from "./graphs/78.71.bin"
 import * as KerasJS from 'keras-js';
 
 $(document).ready(function() {
@@ -22,7 +22,7 @@ $(document).ready(function() {
         filepath: model1,
         gpu: true
     })
-    //console.log(runModel(model));
+    runModel(model);
 })
 
 function makeCropper() {
@@ -68,32 +68,6 @@ function makeCropper() {
     });
 }
 
-function makePrediction(data1) {
-    model
-        .ready()
-        .then(() => {
-            // input data object keyed by names of the input layers
-            // or `input` for Sequential models
-            // values are the flattened Float32Array data
-            // (input tensor shapes are specified in the model config)
-            const inputData = {
-                input: new Float32Array(data1)
-            }
-
-            // make predictions
-            return model.predict(inputData)
-        })
-        .then(outputData => {
-            // outputData is an object keyed by names of the output layers
-            // or `output` for Sequential models
-            // e.g.,
-            // outputData['fc1000']
-        })
-        .catch(err => {
-            // handle error
-        })
-}
-
 function runModel(model) {
     console.log('Running Model');
 
@@ -104,6 +78,7 @@ function runModel(model) {
       ctx.canvas.width,
       ctx.canvas.height
     );
+
     const { data, width, height } = imageData;
 
     // data processing
@@ -130,10 +105,10 @@ function runModel(model) {
       dataProcessedTensor.pick(null, null, 2),
       dataTensor.pick(null, null, 2)
     );
-
-    const inputData = { [Object.keys(model.inputTensors)[0]] : dataProcessedTensor.data };
+    console.log(model.inputLayerNames[0]);
+    const inputData = { [model.inputLayerNames[0]] : dataProcessedTensor.data };
     const outputData = model.predict(inputData);
 
-    return outputData;
+    console.log(outputData);
 
   }
