@@ -1,28 +1,23 @@
-/*import _ from 'lodash';
-
-import "materialize-loader";
-
-*/
-import './style.css';
-import cropper from "cropper";
 const $ = require("jquery");
+import cropper from "cropper";
+import _ from 'lodash';
+import "materialize-loader";
+import * as KerasJS from 'keras-js';
+
+import './style.css';
 import sample from "./images/a2.jpg";
 import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
 import model1 from "./graphs/78.71.bin"
-import * as KerasJS from 'keras-js';
+
 
 $(document).ready(function() {
-    //$(".imgCont").append($("<img id='image' src="+ sample +"></img>"))
     makeCropper()
     var ctx = document.getElementById('canvas').getContext("2d");
     ctx.drawImage(document.getElementById("samp"),10, 10)
 
-    const model = new KerasJS.Model({
-        filepath: model1,
-        gpu: true
-    })
-    runModel(model);
+
+    runModel();
 })
 
 function makeCropper() {
@@ -68,8 +63,14 @@ function makeCropper() {
     });
 }
 
-function runModel(model) {
+function runModel() {
     console.log('Running Model');
+
+    const model = new KerasJS.Model({
+        filepath: model1,
+        gpu: true
+    })
+    console.log("HI")
 
     const ctx = document.getElementById('canvas').getContext('2d');
     const imageData = ctx.getImageData(
@@ -105,10 +106,18 @@ function runModel(model) {
       dataProcessedTensor.pick(null, null, 2),
       dataTensor.pick(null, null, 2)
     );
-    console.log(model.inputLayerNames[0]);
-    const inputData = { [model.inputLayerNames[0]] : dataProcessedTensor.data };
-    const outputData = model.predict(inputData);
-
-    console.log(outputData);
+    const inputData = { ["input_1"] : dataProcessedTensor.data };
+    model
+      .ready()
+      .then(() => {
+        console.log("here");
+        return model.predict(inputData);
+      })
+      .then(outputData => {
+        console.log(outputData);
+      })
+      .catch(err => {
+        // handle error
+      })
 
   }
