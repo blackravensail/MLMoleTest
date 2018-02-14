@@ -2,58 +2,62 @@
 
 <head>
     <title>Mole </title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+
+
 </head>
 
 <body>
+    <script src="bundle.js"></script>
     <div class="container" id="main">
         <h2>ML Mole Test</h2>
         <div class="row">
             <div class="col m6">
-                <p>
-                    Use the dialog to the left to test if a mole is malignant using a Deep Convolutional Neural Network.
-                </p>
-                <form action="#">
-                    <div class="file-field input-field">
-                        <div class="btn">
-                            <span>File</span>
-                            <input type="file" id="fileInput">
-                        </div>
-                        <button id="btnCrop">Crop</button>
-                        <button id="btnRestore">Restore</button>
-                       <!--  <div class="file-path-wrapper">
-                            <input class="file-path validate" id="fileInput" type="text" placeholder="Select Image" accept="image/*"/>
-                        </div> -->
-                    </div>
-                </form>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </div>
-            <div class="col m6">
-                <div class="imgCont">
-                    <canvas id="canvas" height="299" width="299"></canvas>
+            <div class="col m6 container">
+                <div class='row'>
+                    <form action="#" class="col s8 offset-s1">
+                        <div class="file-field input-field">
+                            <div class="btn">
+                                <span>File</span>
+                                <input type="file" id='fileID'>
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <canvas id="canvas" height='299' width='299' class="col s10 offset-2"></canvas>
+                </div>
+                <div class='row'>
+                    <button class="btn col s5 offset-s1" id="runPredict">Run Prediction</button>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Result</th>
-                        <th>Confidence</th>
-                    </tr>
-                </thead>
 
-                <tbody>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Result</th>
+                    <th>Confidence</th>
+                </tr>
+            </thead>
 
-                </tbody>
-            </table>
+            <tbody class="main">
 
-
-        </div>
+            </tbody>
+        </table>
         <img src='516146cc4f246ff28ff2cbbf993bf91a.jpg' id="samp">
 
     </div>
-    <script src="bundle.js"></script>
+
 </body>
 
 </html>
