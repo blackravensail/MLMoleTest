@@ -14,17 +14,31 @@ body {
     padding: 2em;
     /*margin-top: 7em;*/
 }
-img {
-    max-width: 100%;
-}
+
 .imgCont {
     width: 100%;
     border: 2px solid blue;
 }
+img {
+	max-width: 100%;
+}
 
 canvas {
-  width: 100%;
+  min-width: 80px;
+  min-height: 80px !important;
   background-color: transparent;
   cursor: default;
   border: 1px solid black;
+}
+
+.preview_img {
+	padding: 0 !important;
+	width: 60px !important;
+	height: 60px !important;
+}
+#samp {
+	display: none;
+}
+button {
+	padding-top: 1.25rem;
 }
