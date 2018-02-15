@@ -22774,15 +22774,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__cropper_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__cropper_min_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__images_a2_jpg__ = __webpack_require__(724);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__images_a2_jpg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__images_a2_jpg__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ndarray__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ndarray___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_ndarray__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ndarray_ops__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ndarray_ops___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_ndarray_ops__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__graphs_78_71_bin__ = __webpack_require__(725);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__graphs_78_71_bin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__graphs_78_71_bin__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__images_gearcogs_png__ = __webpack_require__(725);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__images_gearcogs_png___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__images_gearcogs_png__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ndarray__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ndarray___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_ndarray__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ndarray_ops__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ndarray_ops___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_ndarray_ops__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__graphs_78_71_bin__ = __webpack_require__(726);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__graphs_78_71_bin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__graphs_78_71_bin__);
 const $ = __webpack_require__(142);
 
 //import _ from 'lodash';
+
+
 
 
 
@@ -22798,22 +22802,24 @@ var model;
 
 $(document).ready(function() {
 
-    model = new __WEBPACK_IMPORTED_MODULE_2_keras_js__["Model"]({
-        filepath: __WEBPACK_IMPORTED_MODULE_8__graphs_78_71_bin___default.a,
-        gpu: true
-    })
+    $("#loadModel").on('click', function() {
+        loadModel();
+        $('.modelData').html("<span style='color: green; font-weight: bold; font-size:2.5rem;'>Model Loaded</span>")
+    });
     //var ctx = document.getElementById('canvas').getContext("2d");
     //ctx.drawImage(document.getElementById("samp"), 0, 0);
 
     //addRow($("#canvas").get(0), [0.51, 0.49]);
 
-    var canvas  = $("#canvas");
-    var context = canvas.get(0).getContext("2d");
+
 
 
     $("input#fileID").change(function() {
         if (this.files && this.files[0]) {
             if (this.files[0].type.match(/^image\//)) {
+                $('figure').html("<canvas id='canvas' height='299' width='299'></canvas><figcaption><div class='btn colapse-btn' id='runPredict'>Run</div></figcaption>");
+                var canvas  = $("#canvas");
+                var context = canvas.get(0).getContext("2d");
                 var reader = new FileReader();
                 reader.onload = function(evt) {
                     var img = new Image();
@@ -22826,12 +22832,16 @@ $(document).ready(function() {
                         });
                         $('#runPredict').click(function() {
                             var cvs = canvas.cropper('getCroppedCanvas');
-                            runModel(cvs.getContext('2d'),cvs)
+                            var url = cvs.toDataURL("image/png");
+                            $('figure').html("<img src='"+__WEBPACK_IMPORTED_MODULE_6__images_gearcogs_png___default.a+"' id='gear'>");
+                            runModel(cvs.getContext('2d'),cvs, url);
+
                         });
                     };
                     img.src = evt.target.result;
                 };
                 reader.readAsDataURL(this.files[0]);
+
             } else {
                 alert("Invalid file type! Please select an image file.");
             }
@@ -22839,13 +22849,15 @@ $(document).ready(function() {
             alert('No file(s) selected.');
         }
     });
-
 });
-function addRow(cvs, result) {
-    console.log("hi");
-    console.log(result[dense_1][dense_1][0]);
-    console.log((result[0] - .5));
-    console.log((result[0] - .5)*200);
+function loadModel() {
+    model = new __WEBPACK_IMPORTED_MODULE_2_keras_js__["Model"]({
+        filepath: __WEBPACK_IMPORTED_MODULE_9__graphs_78_71_bin___default.a,
+        gpu: true
+    });
+}
+
+function addRow(imgURL, result) {
     var row = $("<tr></tr>");
     i++;
     row.append($("<td>" + i + "</td>"))
@@ -22859,11 +22871,12 @@ function addRow(cvs, result) {
     }
 
     $(".main").append(row);
-    row.find(".preview_img").attr("src", canvas.toDataURL());
+    row.find(".preview_img").attr("src", imgURL);
+    $('figure').html("");
 
 }
 
-function runModel(ctx, cvs) {
+function runModel(ctx, cvs, imgURL) {
 
 
     const imageData = ctx.getImageData(
@@ -22882,24 +22895,24 @@ function runModel(ctx, cvs) {
     // data processing
     // see https://github.com/fchollet/keras/blob/master/keras/applications/imagenet_utils.py
     // and https://github.com/fchollet/keras/blob/master/keras/applications/inception_v3.py
-    let dataTensor = __WEBPACK_IMPORTED_MODULE_6_ndarray___default()(new Float32Array(data), [width, height, 4]);
-    let dataProcessedTensor = __WEBPACK_IMPORTED_MODULE_6_ndarray___default()(new Float32Array(width * height * 3), [
+    let dataTensor = __WEBPACK_IMPORTED_MODULE_7_ndarray___default()(new Float32Array(data), [width, height, 4]);
+    let dataProcessedTensor = __WEBPACK_IMPORTED_MODULE_7_ndarray___default()(new Float32Array(width * height * 3), [
         width,
         height,
         3
     ]);
-    __WEBPACK_IMPORTED_MODULE_7_ndarray_ops___default.a.divseq(dataTensor, 255);
-    __WEBPACK_IMPORTED_MODULE_7_ndarray_ops___default.a.subseq(dataTensor, 0.5);
-    __WEBPACK_IMPORTED_MODULE_7_ndarray_ops___default.a.mulseq(dataTensor, 2);
-    __WEBPACK_IMPORTED_MODULE_7_ndarray_ops___default.a.assign(
+    __WEBPACK_IMPORTED_MODULE_8_ndarray_ops___default.a.divseq(dataTensor, 255);
+    __WEBPACK_IMPORTED_MODULE_8_ndarray_ops___default.a.subseq(dataTensor, 0.5);
+    __WEBPACK_IMPORTED_MODULE_8_ndarray_ops___default.a.mulseq(dataTensor, 2);
+    __WEBPACK_IMPORTED_MODULE_8_ndarray_ops___default.a.assign(
         dataProcessedTensor.pick(null, null, 0),
         dataTensor.pick(null, null, 0)
     );
-    __WEBPACK_IMPORTED_MODULE_7_ndarray_ops___default.a.assign(
+    __WEBPACK_IMPORTED_MODULE_8_ndarray_ops___default.a.assign(
         dataProcessedTensor.pick(null, null, 1),
         dataTensor.pick(null, null, 1)
     );
-    __WEBPACK_IMPORTED_MODULE_7_ndarray_ops___default.a.assign(
+    __WEBPACK_IMPORTED_MODULE_8_ndarray_ops___default.a.assign(
         dataProcessedTensor.pick(null, null, 2),
         dataTensor.pick(null, null, 2)
     );
@@ -22921,9 +22934,7 @@ function runModel(ctx, cvs) {
             // or `output` for Sequential models
             // e.g.,
             // outputData['fc1000']
-            console.log(outputData);
-            console.log(outputData[dense_1][dense_1]);
-            addRow(cvs, outputData);
+            addRow(imgURL, outputData["dense_1"]);
         })
         .catch(err => {
         // handle error
@@ -63522,7 +63533,7 @@ exports = module.exports = __webpack_require__(103)(undefined);
 
 
 // module
-exports.push([module.i, ".hello {\n\tcolor: red;\n}\nbody {\n\tbackground:url(" + __webpack_require__(720) + ") center center no-repeat;\n    background-attachment: fixed;\n    background-size:cover;\n    color: white;\n    font-family: sans-serif;\n}\n#main {\n    background-color: rgba(84,84,84,.8) !important;\n    border-radius: 4px;\n    padding: 2em;\n    /*margin-top: 7em;*/\n}\n\n.imgCont {\n    width: 100%;\n    border: 2px solid blue;\n}\nimg {\n\tmax-width: 100%;\n}\n\ncanvas {\n  min-width: 80px;\n  min-height: 80px !important;\n  background-color: transparent;\n  cursor: default;\n  border: 1px solid black;\n}\n\n.preview_img {\n\tpadding: 0 !important;\n\twidth: 60px !important;\n\theight: 60px !important;\n}\n#samp {\n\tdisplay: none;\n}\nbutton {\n\tpadding-top: 1.25rem;\n}\n", ""]);
+exports.push([module.i, "body {\n\tbackground:url(" + __webpack_require__(720) + ") center center no-repeat;\n    background-attachment: fixed;\n    background-size:cover;\n    color: white;\n    font-family: sans-serif;\n}\n#main {\n    background-color: rgba(84,84,84,.8) !important;\n    border-radius: 4px;\n    padding: 2em;\n    /*margin-top: 7em;*/\n}\n\n.imgCont {\n    width: 100%;\n    border: 2px solid blue;\n}\nimg {\n\tmax-width: 100%;\n}\n.row {\n\ttext-align: center;\n}\n\ncanvas {\n  min-width: 80px;\n  min-height: 80px !important;\n  width: auto;\n  background-color: transparent;\n  cursor: default;\n  border: 1px solid black;\n  text-align: center;\n}\n\n.preview_img {\n\tpadding: 0 !important;\n\twidth: 60px !important;\n\theight: 60px !important;\n}\n#samp {\n\tdisplay: none;\n}\nbutton {\n\tpadding-top: 1.25rem;\n}\n#runPredict {\n\tmargin: 1rem 0 0 1rem;\n}\n#clear {\n\tmargin: 1rem 0 0 1rem;\n}\n.bodyPara {\n\ttext-align: left !important;\n}\n#gear {\n\twidth: 40px;\n\theight: 40px;\n\t-webkit-animation:spin 4s linear infinite;\n\t-moz-animation:spin 4s linear infinite;\n\tanimation:spin 4s linear infinite;\n}\n", ""]);
 
 // exports
 
@@ -63681,6 +63692,12 @@ module.exports = __webpack_require__.p + "516146cc4f246ff28ff2cbbf993bf91a.jpg";
 
 /***/ }),
 /* 725 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "a1e0b8ecf594b10e8db7ded95ef00d19.png";
+
+/***/ }),
+/* 726 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "e5d774957af078d805b472c245ee60db.bin";

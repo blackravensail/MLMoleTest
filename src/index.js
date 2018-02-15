@@ -7,31 +7,35 @@ import * as KerasJS from 'keras-js';
 import './style.css';
 import './cropper.min.css';
 import sample from "./images/a2.jpg";
+import gear from './images/gearcogs.png';
 import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
 import model1 from "./graphs/78.71.bin"
+
 
 var i = 0;
 var model;
 
 $(document).ready(function() {
 
-    model = new KerasJS.Model({
-        filepath: model1,
-        gpu: true
-    })
+    $("#loadModel").on('click', function() {
+        loadModel();
+        $('.modelData').html("<span style='color: green; font-weight: bold; font-size:2.5rem;'>Model Loaded</span>")
+    });
     //var ctx = document.getElementById('canvas').getContext("2d");
     //ctx.drawImage(document.getElementById("samp"), 0, 0);
 
     //addRow($("#canvas").get(0), [0.51, 0.49]);
 
-    var canvas  = $("#canvas");
-    var context = canvas.get(0).getContext("2d");
+
 
 
     $("input#fileID").change(function() {
         if (this.files && this.files[0]) {
             if (this.files[0].type.match(/^image\//)) {
+                $('figure').html("<canvas id='canvas' height='299' width='299'></canvas><figcaption><div class='btn colapse-btn' id='runPredict'>Run</div></figcaption>");
+                var canvas  = $("#canvas");
+                var context = canvas.get(0).getContext("2d");
                 var reader = new FileReader();
                 reader.onload = function(evt) {
                     var img = new Image();
@@ -44,12 +48,16 @@ $(document).ready(function() {
                         });
                         $('#runPredict').click(function() {
                             var cvs = canvas.cropper('getCroppedCanvas');
-                            runModel(cvs.getContext('2d'),cvs)
+                            var url = cvs.toDataURL("image/png");
+                            $('figure').html("<img src='"+gear+"' id='gear'>");
+                            runModel(cvs.getContext('2d'),cvs, url);
+
                         });
                     };
                     img.src = evt.target.result;
                 };
                 reader.readAsDataURL(this.files[0]);
+
             } else {
                 alert("Invalid file type! Please select an image file.");
             }
@@ -57,13 +65,15 @@ $(document).ready(function() {
             alert('No file(s) selected.');
         }
     });
-
 });
-function addRow(cvs, result) {
-    console.log("hi");
-    console.log(result[dense_1][dense_1][0]);
-    console.log((result[0] - .5));
-    console.log((result[0] - .5)*200);
+function loadModel() {
+    model = new KerasJS.Model({
+        filepath: model1,
+        gpu: true
+    });
+}
+
+function addRow(imgURL, result) {
     var row = $("<tr></tr>");
     i++;
     row.append($("<td>" + i + "</td>"))
@@ -77,11 +87,12 @@ function addRow(cvs, result) {
     }
 
     $(".main").append(row);
-    row.find(".preview_img").attr("src", canvas.toDataURL());
+    row.find(".preview_img").attr("src", imgURL);
+    $('figure').html("");
 
 }
 
-function runModel(ctx, cvs) {
+function runModel(ctx, cvs, imgURL) {
 
 
     const imageData = ctx.getImageData(
@@ -139,8 +150,7 @@ function runModel(ctx, cvs) {
             // or `output` for Sequential models
             // e.g.,
             // outputData['fc1000']
-            console.log(outputData);
-            addRow(cvs, outputData);
+            addRow(imgURL, outputData["dense_1"]);
         })
         .catch(err => {
         // handle error

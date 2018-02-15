@@ -13,13 +13,44 @@
     <div class="container" id="main">
         <h2>ML Mole Test</h2>
         <div class="row">
-            <div class="col m6">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            <div class="col m6 bodyPara">
+                <p>
+                    To make a prediction, take or upload a file using the File button. Then click run.
+                </p>
+                <p>
+                    This system works by running the image through a
+                    Convoultional Neural Network trained to recognise the differences between
+                    <span style='font-weight: bold;'>Benign</span> and <span style='font-weight: bold;'>Malignant</span> moles.
+                    To learn more about how this work go to the info page.
+                    The model may take a while to run depending on your computer graphics system, so be patient.
+                </p>
+                <p style="font-weight: bold; font-size: 1.25rem; color: red;">
+                    This is a development version!
+                    The results are not accurate.
+                    This is for bug testing and beta testing.
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Result</th>
+                            <th>Confidence</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="main">
+
+                    </tbody>
+                </table>
             </div>
             <div class="col m6 container">
-                <div class='row'>
-                    <form action="#" class="col s8 offset-s1">
+                <div class="row modelData">
+                    <span style="color: red; font-weight: bold; margin-right: 2rem;">Model Not Loaded</span>
+                    <button class='btn' id='loadModel'>Load Model</button>
+                </div>
+                <div class="row">
+                    <form action="#" class="">
                         <div class="file-field input-field">
                             <div class="btn">
                                 <span>File</span>
@@ -31,29 +62,13 @@
                         </div>
                     </form>
                 </div>
-                <div class="row">
-                    <canvas id="canvas" height='299' width='299' class="col s10 offset-2"></canvas>
-                </div>
-                <div class='row'>
-                    <button class="btn col s5 offset-s1" id="runPredict">Run Prediction</button>
-                </div>
+                <figure id="colapse" class="row">
+
+                </figure>
             </div>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Image</th>
-                    <th>Result</th>
-                    <th>Confidence</th>
-                </tr>
-            </thead>
 
-            <tbody class="main">
-
-            </tbody>
-        </table>
         <img src='516146cc4f246ff28ff2cbbf993bf91a.jpg' id="samp">
 
     </div>
