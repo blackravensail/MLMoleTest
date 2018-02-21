@@ -15,19 +15,19 @@ import model1 from "./graphs/78.71.bin"
 
 var i = 0;
 var model;
+window.rr = model;
 
 $(document).ready(function() {
 
     $("#loadModel").on('click', function() {
-        loadModel();
+        model = new KerasJS.Model({
+            filepath: model1,
+            gpu: true
+        });
+        window.rr = model;
         $('.modelData').html("<span style='color: green; font-weight: bold; font-size:2.5rem;'>Model Loaded</span>")
+        $('#upBtn').toggleClass('disabled');
     });
-    //var ctx = document.getElementById('canvas').getContext("2d");
-    //ctx.drawImage(document.getElementById("samp"), 0, 0);
-
-    //addRow($("#canvas").get(0), [0.51, 0.49]);
-
-
 
 
     $("input#fileID").change(function() {
@@ -66,12 +66,6 @@ $(document).ready(function() {
         }
     });
 });
-function loadModel() {
-    model = new KerasJS.Model({
-        filepath: model1,
-        gpu: true
-    });
-}
 
 function addRow(imgURL, result) {
     var row = $("<tr></tr>");
