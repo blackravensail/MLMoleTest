@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
 
     <link rel="icon" href="icon.gif">
+
+    <style> #main {margin-top: 7rem; margin-bottom: 7rem;}</style>
 </head>
 
 <body>
-    <header></header>
     <script src="bundle.js"></script>
     <div class="container" id="main">
-        <h2>ML Mole Test</h2>
+        <h2><a href='index.html' style='color:white;'>ML MoleTest</a></h2>
         <div class="row">
             <div class="col m6 bodyPara">
                 <p>
@@ -22,7 +23,7 @@
                     This system works by running the image through a
                     Convoultional Neural Network trained to recognise the differences between
                     <span style='font-weight: bold;'>Benign</span> and <span style='font-weight: bold;'>Malignant</span> moles.
-                    To learn more about how this work go to the info page.
+                    To learn more about how this works go to the <a href='info.html'>info page</a>.
                     The model may take a while to run depending on your computer graphics system, so be patient.
                 </p>
                 <p style="font-weight: bold; font-size: 1.25rem; color: red;">
@@ -53,7 +54,7 @@
                 <div class="row">
                     <form action="#" class="">
                         <div class="file-field input-field">
-                            <div class="btn">
+                            <div class="btn disabled" id="upBtn">
                                 <span>File</span>
                                 <input type="file" id='fileID'>
                             </div>

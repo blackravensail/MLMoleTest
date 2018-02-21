@@ -1,0 +1,13 @@
+body {
+	background:url('./c884a8b192516d690e0cabb984efdec4.jpg') center center no-repeat;
+    background-attachment: fixed;
+    background-size:cover;
+    color: white;
+    font-family: sans-serif;
+}
+#main {
+    background-color: rgba(84,84,84,.8) !important;
+    border-radius: 4px;
+    padding: 2em;
+    margin-top: 7em;
+}
