@@ -87,8 +87,6 @@ function addRow(imgURL, result) {
 }
 
 function runModel(ctx, cvs, imgURL) {
-
-
     const imageData = ctx.getImageData(
         0,
         0,
@@ -129,6 +127,7 @@ function runModel(ctx, cvs, imgURL) {
     const inputData = {
         ["input_1"]: dataProcessedTensor.data
     };
+    console.log("We started the function!");
     model
         .ready()
         .then(() => {
@@ -138,12 +137,15 @@ function runModel(ctx, cvs, imgURL) {
             // (input tensor shapes are specified in the model config)
             // make predictions
             return model.predict(inputData)
+            console.log("Ran the Model");
         })
         .then(outputData => {
             // outputData is an object keyed by names of the output layers
             // or `output` for Sequential models
             // e.g.,
             // outputData['fc1000']
+            console.log("Model Finished!")
+            console.log(outputData);
             addRow(imgURL, outputData["dense_1"]);
         })
         .catch(err => {
