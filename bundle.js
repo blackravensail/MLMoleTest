@@ -22441,7 +22441,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(721);
+var	fixUrls = __webpack_require__(722);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -22768,25 +22768,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_materialize_loader___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_materialize_loader__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_keras_js__ = __webpack_require__(236);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_keras_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_keras_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__style_css__ = __webpack_require__(718);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__style_css__ = __webpack_require__(719);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__style_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__style_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__cropper_min_css__ = __webpack_require__(722);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__cropper_min_css__ = __webpack_require__(723);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__cropper_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__cropper_min_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__images_a2_jpg__ = __webpack_require__(724);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__images_a2_jpg__ = __webpack_require__(725);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__images_a2_jpg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__images_a2_jpg__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__images_gearcogs_png__ = __webpack_require__(725);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__images_gearcogs_png__ = __webpack_require__(726);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__images_gearcogs_png___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__images_gearcogs_png__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ndarray__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ndarray___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_ndarray__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ndarray_ops__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ndarray_ops___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_ndarray_ops__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__graphs_78_71_bin__ = __webpack_require__(726);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__graphs_78_71_bin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__graphs_78_71_bin__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__graphs_80_09_unq_bin__ = __webpack_require__(727);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__graphs_80_09_unq_bin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__graphs_80_09_unq_bin__);
 const $ = __webpack_require__(142);
 
 //import _ from 'lodash';
 
 
+var resizeImage = __webpack_require__(718);
 
 
 
@@ -22799,18 +22800,21 @@ const $ = __webpack_require__(142);
 
 var i = 0;
 var model;
-window.rr = model;
 
 $(document).ready(function() {
 
     $("#loadModel").on('click', function() {
         model = new __WEBPACK_IMPORTED_MODULE_2_keras_js__["Model"]({
-            filepath: __WEBPACK_IMPORTED_MODULE_9__graphs_78_71_bin___default.a,
+            filepath: __WEBPACK_IMPORTED_MODULE_9__graphs_80_09_unq_bin___default.a,
             gpu: true
         });
-        window.rr = model;
-        $('.modelData').html("<span style='color: green; font-weight: bold; font-size:2.5rem;'>Model Loaded</span>")
-        $('#upBtn').toggleClass('disabled');
+        $('.modelData').html("<img src='"+__WEBPACK_IMPORTED_MODULE_6__images_gearcogs_png___default.a+"' id='gear'>");
+        model
+            .ready()
+            .then(() => {
+                $('.modelData').html("<span style='color: green; font-weight: bold; font-size:2.5rem;'>Model Loaded</span>")
+                $('#upBtn').toggleClass('disabled');
+            })
     });
 
 
@@ -22832,9 +22836,9 @@ $(document).ready(function() {
                         });
                         $('#runPredict').click(function() {
                             var cvs = canvas.cropper('getCroppedCanvas');
-                            var url = cvs.toDataURL("image/png");
                             $('figure').html("<img src='"+__WEBPACK_IMPORTED_MODULE_6__images_gearcogs_png___default.a+"' id='gear'>");
-                            runModel(cvs.getContext('2d'),cvs, url);
+
+                            runModel(cvs);
 
                         });
                     };
@@ -22852,6 +22856,7 @@ $(document).ready(function() {
 });
 
 function addRow(imgURL, result) {
+    console.log(result);
     var row = $("<tr></tr>");
     i++;
     row.append($("<td>" + i + "</td>"))
@@ -22867,10 +22872,19 @@ function addRow(imgURL, result) {
     $(".main").append(row);
     row.find(".preview_img").attr("src", imgURL);
     $('figure').html("");
-
 }
 
-function runModel(ctx, cvs, imgURL) {
+
+function runModel(cvs) {
+    var canvas = document.createElement('canvas');
+    canvas.height = 299
+    canvas.width = 299
+
+    var ctx = canvas.getContext('2d')
+    ctx.drawImage(cvs, 0, 0, 299, 299)
+
+    var imgURL = canvas.toDataURL("image/png");
+
     const imageData = ctx.getImageData(
         0,
         0,
@@ -22911,7 +22925,7 @@ function runModel(ctx, cvs, imgURL) {
     const inputData = {
         ["input_1"]: dataProcessedTensor.data
     };
-    console.log("We started the function!");
+
     model
         .ready()
         .then(() => {
@@ -22921,19 +22935,16 @@ function runModel(ctx, cvs, imgURL) {
             // (input tensor shapes are specified in the model config)
             // make predictions
             return model.predict(inputData)
-            console.log("Ran the Model");
         })
         .then(outputData => {
             // outputData is an object keyed by names of the output layers
             // or `output` for Sequential models
             // e.g.,
             // outputData['fc1000']
-            console.log("Model Finished!")
-            console.log(outputData);
             addRow(imgURL, outputData["dense_1"]);
         })
         .catch(err => {
-        // handle error
+            console.log(err);
         })
 }
 
@@ -63493,10 +63504,101 @@ module.exports = function unpack(arr) {
 /* 718 */
 /***/ (function(module, exports, __webpack_require__) {
 
+(function(root, factory) {
+  'use strict';
+  if (true) {
+    // CommonJS
+    module.exports = factory();
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD
+    define(function() {
+      return factory();
+    });
+  } else if (typeof define === 'function' && define.cmd) {
+    // CMD
+    define(function(require, exports, module) {
+      module.exports = factory();
+    });
+  } else {
+    // Global Variables
+    root.ResizeImage = factory();
+  }
+})(this, function () {
+  'use strict';
+  var out = {};
+
+  var IMG_TYPE_PNG = 'png';
+  var IMG_TYPE = [IMG_TYPE_PNG, 'gif', 'bmp', 'jpeg', 'webp'];
+
+  for (var i = 0; i < IMG_TYPE.length; i++) {
+    out[IMG_TYPE[i].toUpperCase()] = IMG_TYPE[i];
+  }
+
+  /**
+   * resize an <img> or <canvas> to canvas
+   * @param  {Image}  img    an <img> or Image() or <canvas>
+   * @param  {number} width  output image width
+   * @param  {number} height output image height
+   * @return {Canvas}        output image canvas
+   */
+  function resize2Canvas(img, width, height) {
+    if (!img || !width) {
+      return img;
+    }
+    height = height || width;
+    // 按原图缩放
+    var detImg = img.width / img.height;
+    if (width / height > detImg) {
+      height = width / detImg;
+    } else {
+      width = height * detImg;
+    }
+    // 画到 canvas 中
+    var canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, width, height);
+    return canvas;
+  }
+  out.resize2Canvas = resize2Canvas;
+
+  /**
+   * resize an <img> or <canvas> to base64
+   * @param  {Image}  img    an <img> or Image() or <canvas
+   * @param  {number} width  output image width
+   * @param  {number} height output image height
+   * @param  {string} type   output image type
+   * @return {string}        output image base64 string
+   */
+  out.resize = function resize(img, width, height, type) {
+    if (IMG_TYPE.indexOf(type) < 0) {
+      type = IMG_TYPE_PNG;
+    }
+    var canvas = resize2Canvas(img, width, height);
+    var ctx = canvas.getContext('2d');
+    // set backgrund color to #fff while output type is NOT PNG
+    if (type !== IMG_TYPE_PNG) {
+      ctx.globalCompositeOperation = 'destination-over';
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.globalCompositeOperation = '';
+    }
+    return canvas.toDataURL('image/' + type);
+  };
+
+  return out;
+});
+
+
+/***/ }),
+/* 719 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(719);
+var content = __webpack_require__(720);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -63521,7 +63623,7 @@ if(false) {
 }
 
 /***/ }),
-/* 719 */
+/* 720 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(103)(undefined);
@@ -63529,19 +63631,19 @@ exports = module.exports = __webpack_require__(103)(undefined);
 
 
 // module
-exports.push([module.i, "body {\n\tbackground:url(" + __webpack_require__(720) + ") center center no-repeat;\n    background-attachment: fixed;\n    background-size:cover;\n    color: white;\n    font-family: sans-serif;\n}\n#main {\n    background-color: rgba(84,84,84,.8) !important;\n    border-radius: 4px;\n    padding: 2em;\n    margin-top: 7em;\n}\n\n.imgCont {\n    width: 100%;\n    border: 2px solid blue;\n}\nimg {\n\tmax-width: 100%;\n}\n.row {\n\ttext-align: center;\n}\n\ncanvas {\n  min-width: 80px;\n  min-height: 80px !important;\n  width: auto;\n  background-color: transparent;\n  cursor: default;\n  border: 1px solid black;\n  text-align: center;\n}\n\n.preview_img {\n\tpadding: 0 !important;\n\twidth: 60px !important;\n\theight: 60px !important;\n}\n#samp {\n\tdisplay: none;\n}\nbutton {\n\tpadding-top: 1.25rem;\n}\n#runPredict {\n\tmargin: 1rem 0 0 1rem;\n}\n#clear {\n\tmargin: 1rem 0 0 1rem;\n}\n.bodyPara {\n\ttext-align: left !important;\n}\n#gear {\n\twidth: 40px;\n\theight: 40px;\n\t-webkit-animation:spin .5s linear infinite;\n\t-moz-animation:spin .5s linear infinite;\n\tanimation:spin .5s linear infinite;\n}\n", ""]);
+exports.push([module.i, "body {\n\tbackground:url(" + __webpack_require__(721) + ") center center no-repeat;\n    background-attachment: fixed;\n    background-size:cover;\n    color: white;\n    font-family: sans-serif;\n}\n#main {\n    background-color: rgba(84,84,84,.8) !important;\n    border-radius: 4px;\n    padding: 2em;\n    margin-top: 7em;\n}\n\n.imgCont {\n    width: 100%;\n    border: 2px solid blue;\n}\nimg {\n\tmax-width: 100%;\n\tmax-height: 100%;\n}\n.row {\n\ttext-align: center;\n}\n\ncanvas {\n  min-width: 80px;\n  min-height: 80px !important;\n  width: auto;\n  background-color: transparent;\n  cursor: default;\n  border: 1px solid black;\n  text-align: center;\n}\n\n.preview_img {\n\tpadding: 0 !important;\n\twidth: 60px !important;\n\theight: 60px !important;\n}\n#samp {\n\tdisplay: none;\n}\nbutton {\n\tpadding-top: 1.25rem;\n}\n#runPredict {\n\tmargin: 1rem 0 0 1rem;\n}\n#clear {\n\tmargin: 1rem 0 0 1rem;\n}\n.bodyPara {\n\ttext-align: left !important;\n}\n#gear {\n\twidth: 40px;\n\theight: 40px;\n\t-webkit-animation:spin 4s linear infinite;\n\t-moz-animation:spin 4s linear infinite;\n\tanimation:spin 4s linear infinite;\n}\n@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }\n@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }\n@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 720 */
+/* 721 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "c884a8b192516d690e0cabb984efdec4.jpg";
 
 /***/ }),
-/* 721 */
+/* 722 */
 /***/ (function(module, exports) {
 
 
@@ -63636,13 +63738,13 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 722 */
+/* 723 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(723);
+var content = __webpack_require__(724);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -63667,7 +63769,7 @@ if(false) {
 }
 
 /***/ }),
-/* 723 */
+/* 724 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(103)(undefined);
@@ -63681,22 +63783,22 @@ exports.push([module.i, "/*!\n * Cropper.js v1.2.2\n * https://github.com/fengyu
 
 
 /***/ }),
-/* 724 */
+/* 725 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "516146cc4f246ff28ff2cbbf993bf91a.jpg";
 
 /***/ }),
-/* 725 */
+/* 726 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "a1e0b8ecf594b10e8db7ded95ef00d19.png";
 
 /***/ }),
-/* 726 */
+/* 727 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "e5d774957af078d805b472c245ee60db.bin";
+module.exports = __webpack_require__.p + "3e48142c071602f0c29ba3f60597ab49.bin";
 
 /***/ })
 /******/ ]);
