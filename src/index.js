@@ -72,7 +72,6 @@ $(document).ready(function() {
 });
 
 function addRow(imgURL, result) {
-    console.log(result);
     var row = $("<tr></tr>");
     i++;
     row.append($("<td>" + i + "</td>"))
@@ -138,8 +137,14 @@ function runModel(cvs) {
         dataProcessedTensor.pick(null, null, 2),
         dataTensor.pick(null, null, 2)
     );
+
+    var preData = dataProcessedTensor.data;
+
+    var scaledData = preData.map(function(element) {
+        return element*256;
+    });
     const inputData = {
-        ["input_1"]: dataProcessedTensor.data
+        ["input_1"]: scaledData
     };
 
     model
