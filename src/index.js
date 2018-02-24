@@ -11,7 +11,7 @@ import sample from "./images/a2.jpg";
 import gear from './images/gearcogs.png';
 import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
-import model1 from "./graphs/80.09-unq.bin"
+import model1 from "./graphs/80.09-q.bin"
 
 
 var i = 0;
