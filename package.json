@@ -29,6 +29,7 @@
     "materialize": "^1.0.0",
     "materialize-css": "^0.100.2",
     "materialize-loader": "^2.0.2",
-    "ndarray": "^1.0.18"
+    "ndarray": "^1.0.18",
+    "resize-image": "0.0.4"
   }
 }

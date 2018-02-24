@@ -3,6 +3,7 @@ import cropper from "cropper";
 //import _ from 'lodash';
 import "materialize-loader";
 import * as KerasJS from 'keras-js';
+var resizeImage = require('resize-image');
 
 import './style.css';
 import './cropper.min.css';
@@ -10,12 +11,11 @@ import sample from "./images/a2.jpg";
 import gear from './images/gearcogs.png';
 import ndarray from 'ndarray';
 import ops from 'ndarray-ops';
-import model1 from "./graphs/78.71.bin"
+import model1 from "./graphs/80.09-unq.bin"
 
 
 var i = 0;
 var model;
-window.rr = model;
 
 $(document).ready(function() {
 
@@ -24,9 +24,13 @@ $(document).ready(function() {
             filepath: model1,
             gpu: true
         });
-        window.rr = model;
-        $('.modelData').html("<span style='color: green; font-weight: bold; font-size:2.5rem;'>Model Loaded</span>")
-        $('#upBtn').toggleClass('disabled');
+        $('.modelData').html("<img src='"+gear+"' id='gear'>");
+        model
+            .ready()
+            .then(() => {
+                $('.modelData').html("<span style='color: green; font-weight: bold; font-size:2.5rem;'>Model Loaded</span>")
+                $('#upBtn').toggleClass('disabled');
+            })
     });
 
 
@@ -48,9 +52,9 @@ $(document).ready(function() {
                         });
                         $('#runPredict').click(function() {
                             var cvs = canvas.cropper('getCroppedCanvas');
-                            var url = cvs.toDataURL("image/png");
                             $('figure').html("<img src='"+gear+"' id='gear'>");
-                            runModel(cvs.getContext('2d'),cvs, url);
+
+                            runModel(cvs);
 
                         });
                     };
@@ -68,6 +72,7 @@ $(document).ready(function() {
 });
 
 function addRow(imgURL, result) {
+    console.log(result);
     var row = $("<tr></tr>");
     i++;
     row.append($("<td>" + i + "</td>"))
@@ -83,10 +88,19 @@ function addRow(imgURL, result) {
     $(".main").append(row);
     row.find(".preview_img").attr("src", imgURL);
     $('figure').html("");
-
 }
 
-function runModel(ctx, cvs, imgURL) {
+
+function runModel(cvs) {
+    var canvas = document.createElement('canvas');
+    canvas.height = 299
+    canvas.width = 299
+
+    var ctx = canvas.getContext('2d')
+    ctx.drawImage(cvs, 0, 0, 299, 299)
+
+    var imgURL = canvas.toDataURL("image/png");
+
     const imageData = ctx.getImageData(
         0,
         0,
@@ -127,7 +141,7 @@ function runModel(ctx, cvs, imgURL) {
     const inputData = {
         ["input_1"]: dataProcessedTensor.data
     };
-    console.log("We started the function!");
+
     model
         .ready()
         .then(() => {
@@ -137,18 +151,15 @@ function runModel(ctx, cvs, imgURL) {
             // (input tensor shapes are specified in the model config)
             // make predictions
             return model.predict(inputData)
-            console.log("Ran the Model");
         })
         .then(outputData => {
             // outputData is an object keyed by names of the output layers
             // or `output` for Sequential models
             // e.g.,
             // outputData['fc1000']
-            console.log("Model Finished!")
-            console.log(outputData);
             addRow(imgURL, outputData["dense_1"]);
         })
         .catch(err => {
-        // handle error
+            console.log(err);
         })
 }
