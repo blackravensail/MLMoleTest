@@ -22780,8 +22780,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ndarray___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_ndarray__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ndarray_ops__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ndarray_ops___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_ndarray_ops__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__graphs_80_09_unq_bin__ = __webpack_require__(727);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__graphs_80_09_unq_bin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__graphs_80_09_unq_bin__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__graphs_80_09_q_bin__ = __webpack_require__(727);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__graphs_80_09_q_bin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__graphs_80_09_q_bin__);
 const $ = __webpack_require__(142);
 
 //import _ from 'lodash';
@@ -22805,7 +22805,7 @@ $(document).ready(function() {
 
     $("#loadModel").on('click', function() {
         model = new __WEBPACK_IMPORTED_MODULE_2_keras_js__["Model"]({
-            filepath: __WEBPACK_IMPORTED_MODULE_9__graphs_80_09_unq_bin___default.a,
+            filepath: __WEBPACK_IMPORTED_MODULE_9__graphs_80_09_q_bin___default.a,
             gpu: true
         });
         $('.modelData').html("<img src='"+__WEBPACK_IMPORTED_MODULE_6__images_gearcogs_png___default.a+"' id='gear'>");
@@ -63803,7 +63803,7 @@ module.exports = __webpack_require__.p + "a1e0b8ecf594b10e8db7ded95ef00d19.png";
 /* 727 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "3e48142c071602f0c29ba3f60597ab49.bin";
+module.exports = __webpack_require__.p + "e4dffe9eb735820eb995dc46761568a7.bin";
 
 /***/ })
 /******/ ]);
