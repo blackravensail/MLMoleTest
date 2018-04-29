@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+
+    <head>
+        <title>MLMoleTest | Home</title>
+        <link rel="stylesheet" href="./static/css/index.html.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script src='static/main.js'></script>
+        <link rel="icon" href="images/icon.gif">
+    </head>
+
+    <body>
+        <header>
+			<nav class="topnav">
+				<h1>Welcome to MLMoleTest.com</h1>
+				<a href='index.html'>Home</a>
+				<a href='info.html'>Information</a>
+			</nav>
+		</header>
+        <article>
+            <p>
+                Welcome! This website allows you to test an image of a mole against my machine learning model to see if it is malignant.
+                To use it, take or choose an image, then Upload. The result should display at the top of the screen.
+            </p>
+
+            <p>
+                Please allow for at least a minute and a half for the API to respond.
+                The server first has to (if you choose) crop the image to the mole, then determine if it is malignant.
+                If the text below the upload form doesn't change, then the API is down right now or swamped with requests.
+                Please try again later if this is the case.
+            </p>
+
+            <p>
+                The algorithm will then return its result.
+                It may take a while to load. Just wait. <strong>Don't spam the button!</strong>
+            </p>
+        </article>
+
+        <article>
+            <div id=upload>
+                <h3>Take/Choose Photo:</h3>
+                <input id = "fileToUpload" type = "file" value='Take/Choose Photo'/>
+                <br><br>
+                <input id = "toCropOrNotToCrop" type = 'checkbox'><span id='cropText'>Auto Crop (Takes about 40 seconds)</span></input>
+                <div id="loading"></div>
+                <input type = "button" value = "Upload" id="submit" onclick="uploadFile()" />
+            </div>
+
+            <div id='output'> Results will go here.</div>
+        </article>
+
+        <article>
+            <p id="warning">
+                In case it isn't obvious, this prediction is not a replacement for a doctor.
+                The model is not completly accurate (Usually about 80%).
+                If you are worryed about a mole, please go see a doctor.
+            </p>
+        </article>
+    </body>
+</html>
