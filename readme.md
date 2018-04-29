@@ -1,6 +1,6 @@
 # MLMoleTest
 
-[MLMoleTest](https://mlmoletest.com) is a static web page with a client side implementation of a Convolutional Neural Network capable of classifying images of skin moles into benign and malignant. The speed of running the model is wholly dependent on you hardware. Ram errors may occur on iPhone due to the overhead of cropper.js and the size of the raw images.  
+[MLMoleTest](http://mlmoletest.com) is a static web page with a client side implementation of a Convolutional Neural Network capable of classifying images of skin moles into benign and malignant. The speed of running the model is wholly dependent on you hardware. Ram errors may occur on iPhone due to the overhead of cropper.js and the size of the raw images.  
 
 ## How it works
 
